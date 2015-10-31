@@ -1,0 +1,26 @@
+{
+  "name": "Github pull request indicator",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "Utilizing favicon to indicate state of a pull requests",
+  "homepage_url": "https://github.com",
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://github.com/*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    "icons/*"
+  ]
+}
