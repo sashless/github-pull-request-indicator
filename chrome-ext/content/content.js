@@ -44,7 +44,7 @@ var setFavIcon = function(path) {
   icon.href = chrome.extension.getURL(path);
 };
 
-var isPullRequestMergeable = function() {
+var isMergeable = function() {
   return document.querySelectorAll('.completeness-indicator-success').length;
 };
 
@@ -53,30 +53,26 @@ var isPullRequest = function() {
 };
 
 var isMerged = function() {
-  return document.querySelectorAll('.post-merge-message').length;
+  return document.querySelectorAll('.post-merge-message').length || document.querySelectorAll('.pull-request-ref-restore');
 };
 
+var stateInterval = false;
+
 var setStateBasedFavIcon = function() {
-  if (isPullRequestMergeable()) {
+  if (isMerged()) {
+    setFavIcon(icons.regular);
+    clearInterval(stateInterval);
+  } else if (isMergeable()) {
     setFavIcon(icons.mergeable);
   } else {
     setFavIcon(icons.broken);
   }
 };
 
-var stateInterval = false;
-
 if (isPullRequest()) {
   setStateBasedFavIcon();
 
   stateInterval = setTimeout(function() {
-    if (isMerged()) {
-      setFavIcon(icons.regular);
-      clearInterval(stateInterval);
-
-      return;
-    }
-
     setStateBasedFavIcon();
   }, 1000);
 } else {
