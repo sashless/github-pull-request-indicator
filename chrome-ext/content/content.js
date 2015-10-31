@@ -52,6 +52,10 @@ var isPullRequest = function() {
   return document.querySelectorAll('[aria-label="Pull Request title"]').length;
 };
 
+var isMerged = function() {
+  return document.querySelectorAll('.post-merge-message').length;
+};
+
 var setStateBasedFavIcon = function() {
   if (isPullRequestMergeable()) {
     setFavIcon(icons.mergeable);
@@ -60,10 +64,19 @@ var setStateBasedFavIcon = function() {
   }
 };
 
+var stateInterval = false;
+
 if (isPullRequest()) {
   setStateBasedFavIcon();
 
-  setTimeout(function() {
+  stateInterval = setTimeout(function() {
+    if (isMerged()) {
+      setFavIcon(icons.regular);
+      clearInterval(stateInterval);
+
+      return;
+    }
+
     setStateBasedFavIcon();
   }, 1000);
 } else {
