@@ -69,12 +69,10 @@ var setStateBasedFavIcon = function() {
   }
 };
 
-if (isPullRequest()) {
-  setStateBasedFavIcon();
-
-  stateInterval = setInterval(function() {
+stateInterval = setInterval(function() {
+  if (isPullRequest()) {
     setStateBasedFavIcon();
-  }, 1000);
-} else {
-  setFavIcon(icons.regular);
-}
+  } else {
+    setFavIcon(icons.regular);
+  }
+}, 1000);
